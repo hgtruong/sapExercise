@@ -14,8 +14,8 @@ class ViewController: UIViewController {
     //Added a viewForLayer view
     @IBOutlet weak var viewForLayer: UIView!
     
-    //Added a label for the text
-    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var textView: UITextView!
+    
     
     //Creates a computerd property for the layer
     var l: CALayer {
@@ -25,8 +25,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLayer()
-        setUpLabel()
+        setUpTextView()
+        
+        //Adding observer to know when user had changed
+        //font size while app is running
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.preferredContentSizeDidChange(forChildContentContainer:)), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
+
     }
+    
+    override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        
+        print("I AM CALLED ALIVE")
+        textView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+    }
+
     
     //Function to set up layer
     func setUpLayer() {
@@ -36,7 +48,7 @@ class ViewController: UIViewController {
         l.borderColor = UIColor.white.cgColor
         
         //Setting border and corder
-        l.borderWidth = 15.0
+        l.borderWidth = 10.0
         l.cornerRadius = 100.0
         
         //Setting shadow
@@ -58,10 +70,21 @@ class ViewController: UIViewController {
     }
     
     //Function to set up label for text
-    func setUpLabel() {
-        textLabel.text = "text.txt"
+    func setUpTextView() {
+        
+        //Setting up path to find text file
+        let path = Bundle.main.path(forResource: "text", ofType: "txt")
+        
+        //Saving the text file into a variable
+        let text = try? NSString(contentsOfFile: path! as String, encoding: String.Encoding.utf8.rawValue)
+        
+//        print(text!)
+        
+        //Adding text to textView
+        textView.text = text! as String
         
     }
+
     
     
     override func didReceiveMemoryWarning() {
