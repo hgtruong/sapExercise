@@ -22,8 +22,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
-//        setUpLayer()
         setUpTextView()
         
         
@@ -33,18 +31,34 @@ class ViewController: UIViewController {
         //** REMEMBER TO CHANGE FONT TO TEXT STYLE**
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.preferredContentSizeDidChange(forChildContentContainer:)), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
 
+        //To Detect change in orientation
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
+    }
+    
+    //Call setUpLayer here because not all layouts are done during viewDidLoad
+    override func viewDidAppear(_ animated: Bool) {
+        setUpLayer()
     }
 
+    //What to do when orientation changed is detected
+    func orientationChanged()
+    {
+        updateLayer()
+        
+    }
     
+    //Function to update star layer
+    func updateLayer() {
+        topRightView.layer.sublayers?[0].frame = CGRect(x: 0, y: 0, width: topRightView.bounds.width, height: topRightView.bounds.height)
+    }
+    
+    //Function to update changed text size by users
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         textView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        setUpLayer()
-    }
-    
-    
+
     //Function to set up layer
     func setUpLayer() {
      
@@ -55,34 +69,24 @@ class ViewController: UIViewController {
         topRightView.layer.addSublayer(subLayer)
         
         
-        
-        
-//        subLayer.frame = CGRect(origin: CGPoint.zero, size: topRightView.bounds.size)
-        
-//        subLayer.frame = CGRect(x: 0, y: 0, width: topRightView.bounds.width, height: topRightView.bounds.height)
-        
-//        subLayer.position = CGPoint(x: topRightView.bounds.minX, y:topRightView.bounds.minX)
-                
-        subLayer.frame = topRightView.bounds
-   
-        
-        
-        print("sublayer frame width: \(subLayer.frame.width) and sublayer frame height: \(subLayer.frame.height)")
-        
-        print("sub layer bounds width: \(subLayer.bounds.width) and sublayer bounds height: \(subLayer.bounds.height)")
-        
-        print("top right frame width: \(topRightView.frame.width) and top right frame height: \(topRightView.frame.height)")
-        
-        print("top right bounds width: \(topRightView.bounds.width) and top right bounds height: \(topRightView.bounds.height)")
-        
-        
-        print("txf: \(topRightView.frame.minX) and tyf: \(topRightView.frame.minY)")
-        
-        print("txb: \(topRightView.bounds.minX) and tyb: \(topRightView.bounds.minY)")
-        
-        print("sxf: \(subLayer.frame.minX) and syf: \(subLayer.frame.minY)")
-        
-        print("sxb: \(subLayer.bounds.minX) and syb: \(subLayer.bounds.minY)")
+        subLayer.frame = CGRect(x: 0, y: 0, width: topRightView.bounds.width, height: topRightView.bounds.height)
+
+//        print("sublayer frame width: \(subLayer.frame.width) and sublayer frame height: \(subLayer.frame.height)")
+//        
+//        print("sub layer bounds width: \(subLayer.bounds.width) and sublayer bounds height: \(subLayer.bounds.height)")
+//        
+//        print("top right frame width: \(topRightView.frame.width) and top right frame height: \(topRightView.frame.height)")
+//        
+//        print("top right bounds width: \(topRightView.bounds.width) and top right bounds height: \(topRightView.bounds.height)")
+//        
+//        
+//        print("txf: \(topRightView.frame.minX) and tyf: \(topRightView.frame.minY)")
+//        
+//        print("txb: \(topRightView.bounds.minX) and tyb: \(topRightView.bounds.minY)")
+//        
+//        print("sxf: \(subLayer.frame.minX) and syf: \(subLayer.frame.minY)")
+//        
+//        print("sxb: \(subLayer.bounds.minX) and syb: \(subLayer.bounds.minY)")
 
         
         //Adding star image
