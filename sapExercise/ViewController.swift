@@ -45,55 +45,65 @@ class ViewController: UIViewController {
     func setUpLayer() {
      
         //create sublayer
-        let starLayer = CALayer()
+        let subLayer = CALayer()
         
-        starLayer.frame = CGRect(x: 0, y: 0, width: topRightView.frame.width, height: topRightView.frame.height)
 
         
-        print("width: \(starLayer.frame.width) and height: \(starLayer.frame.height)")
+ 
+//        subLayer.bounds = CGRect(x: 0, y: 0, width: topRightView.bounds.width, height: topRightView.bounds.height)
         
-        print("bwidth: \(starLayer.bounds.width) and bheight: \(starLayer.bounds.height)")
+//        subLayer.position = CGPoint(x: topRightView.bounds.minX, y:topRightView.bounds.minX)
+        
+        subLayer.frame = topRightView.bounds
+   
+        
+        
+        print("sublayer frame width: \(subLayer.frame.width) and sublayer frame height: \(subLayer.frame.height)")
+        
+        print("sub layer bounds width: \(subLayer.bounds.width) and sublayer bounds height: \(subLayer.bounds.height)")
+        
+        print("top right frame width: \(topRightView.frame.width) and top right frame height: \(topRightView.frame.height)")
+        
+        print("top right bounds width: \(topRightView.bounds.width) and top right bounds height: \(topRightView.bounds.height)")
+        
         
         print("txf: \(topRightView.frame.minX) and tyf: \(topRightView.frame.minY)")
         
         print("txb: \(topRightView.bounds.minX) and tyb: \(topRightView.bounds.minY)")
         
-        print("sxf: \(starLayer.frame.minX) and syf: \(starLayer.frame.minY)")
+        print("sxf: \(subLayer.frame.minX) and syf: \(subLayer.frame.minY)")
         
-        print("sxb: \(starLayer.bounds.minX) and syb: \(starLayer.bounds.minY)")
+        print("sxb: \(subLayer.bounds.minX) and syb: \(subLayer.bounds.minY)")
 
-
-        
-        
         //adding sublayer to main view
-        topRightView.layer.addSublayer(starLayer)
+        topRightView.layer.insertSublayer(subLayer, above: topRightView.layer)
         
         
         //Setting background and border color
-        starLayer.backgroundColor = UIColor(red: 154.0/255.0, green: 154.0/255.0, blue: 154.0/255.0, alpha: 1.0).cgColor
-        starLayer.borderColor = UIColor.white.cgColor
+        subLayer.backgroundColor = UIColor(red: 154.0/255.0, green: 154.0/255.0, blue: 154.0/255.0, alpha: 1.0).cgColor
+        subLayer.borderColor = UIColor.white.cgColor
         
         
         
         //Setting border and corder
-        starLayer.borderWidth = 10.0
-        starLayer.cornerRadius = 100.0
+        subLayer.borderWidth = 10.0
+        subLayer.cornerRadius = 100.0
         
         //Setting shadow
-        starLayer.shadowOffset = CGSize(width: 0,height: 5)
-        starLayer.shadowOpacity = 0.7
-        starLayer.shadowRadius = 7
+        subLayer.shadowOffset = CGSize(width: 0,height: 5)
+        subLayer.shadowOpacity = 0.7
+        subLayer.shadowRadius = 7
       
         //Adding star image
-        starLayer.contents = UIImage(named: "star.png")?.cgImage
-        starLayer.contentsGravity = kCAGravityCenter
+        subLayer.contents = UIImage(named: "star.png")?.cgImage
+        subLayer.contentsGravity = kCAGravityCenter
         
         /*The shadow is drawn outside of the layer's bounds. You have to set listView.layer.masksToBounds = NO to see the shadow
  
-         if you set starLayer.masksToBounds = YES you can't draw anything out side of bounds so you can not get shadow
+         if you set subLayer.masksToBounds = YES you can't draw anything out side of bounds so you can not get shadow
 
          */
-        starLayer.masksToBounds = false
+        subLayer.masksToBounds = false
         
     }
     
