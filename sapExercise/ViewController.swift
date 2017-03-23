@@ -11,23 +11,22 @@ import UIKit
 class ViewController: UIViewController {
 
    
-    //Added a viewForLayer view
-    @IBOutlet weak var viewForLayer: UIView!
     
     @IBOutlet weak var topRightView: UIView!
     
     @IBOutlet weak var textView: UITextView!
     
+    @IBOutlet var rootView: UIView!
     
-    //Creates a computerd property for the layer
-    var l: CALayer {
-        return viewForLayer.layer
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpLayer()
+     
+//        setUpLayer()
         setUpTextView()
+        
+        
         
         //Adding observer to know when user had changed
         //font size while app is running
@@ -35,11 +34,16 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.preferredContentSizeDidChange(forChildContentContainer:)), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
 
     }
+
     
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         textView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setUpLayer()
+    }
+    
     
     //Function to set up layer
     func setUpLayer() {
@@ -47,13 +51,18 @@ class ViewController: UIViewController {
         //create sublayer
         let subLayer = CALayer()
         
-
+        //adding sublayer to main view
+        topRightView.layer.addSublayer(subLayer)
         
- 
-//        subLayer.bounds = CGRect(x: 0, y: 0, width: topRightView.bounds.width, height: topRightView.bounds.height)
+        
+        
+        
+//        subLayer.frame = CGRect(origin: CGPoint.zero, size: topRightView.bounds.size)
+        
+//        subLayer.frame = CGRect(x: 0, y: 0, width: topRightView.bounds.width, height: topRightView.bounds.height)
         
 //        subLayer.position = CGPoint(x: topRightView.bounds.minX, y:topRightView.bounds.minX)
-        
+                
         subLayer.frame = topRightView.bounds
    
         
@@ -75,8 +84,10 @@ class ViewController: UIViewController {
         
         print("sxb: \(subLayer.bounds.minX) and syb: \(subLayer.bounds.minY)")
 
-        //adding sublayer to main view
-        topRightView.layer.insertSublayer(subLayer, above: topRightView.layer)
+        
+        //Adding star image
+        subLayer.contents = UIImage(named: "star.png")?.cgImage
+        subLayer.contentsGravity = kCAGravityCenter
         
         
         //Setting background and border color
@@ -94,9 +105,6 @@ class ViewController: UIViewController {
         subLayer.shadowOpacity = 0.7
         subLayer.shadowRadius = 7
       
-        //Adding star image
-        subLayer.contents = UIImage(named: "star.png")?.cgImage
-        subLayer.contentsGravity = kCAGravityCenter
         
         /*The shadow is drawn outside of the layer's bounds. You have to set listView.layer.masksToBounds = NO to see the shadow
  
@@ -105,8 +113,9 @@ class ViewController: UIViewController {
          */
         subLayer.masksToBounds = false
         
+        
     }
-    
+
     
     //Function to set up label for text
     func setUpTextView() {
